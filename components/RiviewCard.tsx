@@ -27,14 +27,14 @@ const StarIcon: React.FC<{ filled: boolean }> = ({ filled }) => (
 
 const ReviewCard: React.FC<ReviewCardProps> = ({ name, initialLetter, rating, daysAgo, comment }) => {
   return (
-    <div className="bg-white rounded-lg shadow-md p-4 h-full flex flex-col">
+    <div className="bg-green-700 rounded-lg shadow-md p-4 h-full flex flex-col">
       <div className="flex items-center mb-2">
-        <div className="w-10 h-10 rounded-full bg-blue-500 flex items-center justify-center text-white font-bold mr-3">
+        {/* <div className="w-10 h-10 rounded-full bg-blue-500 flex items-center justify-center text-white font-bold mr-3">
           {initialLetter}
-        </div>
+        </div> */}
         <div>
-          <h3 className="font-semibold text-sm">{name}</h3>
-          <p className="text-xs text-gray-500">{daysAgo} days ago</p>
+          <h3 className="font-semibold text-white text-sm">{name}</h3>
+          <p className="text-xs text-gray-20">{daysAgo} days ago</p>
         </div>
       </div>
       <div className="flex mb-2">
@@ -42,7 +42,7 @@ const ReviewCard: React.FC<ReviewCardProps> = ({ name, initialLetter, rating, da
           <StarIcon key={i} filled={i < rating} />
         ))}
       </div>
-      <p className="text-sm text-gray-700 flex-grow overflow-hidden">{comment}</p>
+      <p className="text-sm text-white flex-grow overflow-hidden">{comment}</p>
     </div>
   );
 };
