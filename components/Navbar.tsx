@@ -10,7 +10,7 @@ const Navbar = () => {
           <input
             type="text"
             placeholder="Search..."
-            className="w-full pl-3 pr-10 py-2 border-2 border-green-800 rounded-full focus:outline-none focus:ring-2 focus:ring-green-700"
+            className="w-full pl-3 pr-10 py-2 border-2  border-green-800 rounded-full focus:outline-none focus:ring-2 focus:ring-green-700"
           />
           <svg
             className="absolute right-3 top-1/2 transform -translate-y-1/2 text-green-800"
