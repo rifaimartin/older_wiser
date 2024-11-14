@@ -1,6 +1,13 @@
+"use client";
 import React from 'react';
-
+import { useRouter } from 'next/navigation';
 const Navbar = () => {
+  const router = useRouter();
+
+  // Opsi 1: Menggunakan handler function dengan useRouter
+  const handleLoginClick = () => {
+    router.push('/auth/register');
+  };
   return (
     <nav className="flex items-center justify-between px-4 py-2 bg-white ">
       <div className="flex items-center space-x-4 flex-grow">
@@ -28,7 +35,12 @@ const Navbar = () => {
           </svg>
         </div>
       </div>
-      <button className="ml-4 px-3 py-1 text-sm font-semibold text-black hover:text-gray-800">Log In</button>
+      <button 
+        onClick={handleLoginClick}
+        className="ml-4 px-3 py-1 text-sm font-semibold text-black hover:text-gray-800"
+      >
+        Log In
+      </button>
     </nav>
   );
 };
