@@ -1,11 +1,15 @@
+
+
 'use client'
 import { useState, useRef } from 'react';
 import { AuthCard } from './AuthCard';
 import { SocialButton } from '@/components/auth/SocialButton';
 import ReCAPTCHA from "react-google-recaptcha";
 import { API_BASE_URL } from '@/constants';
+import { useRouter } from 'next/navigation';
 
 export default function Register() {
+  const router = useRouter();
   const [formData, setFormData] = useState({
     email: '',
     name: '',
@@ -60,7 +64,7 @@ export default function Register() {
       }
 
       // Proceed with registration
-      const response = await fetch(`${API_BASE_URL}/auth/register`, {
+      const registerResponse = await fetch(`${API_BASE_URL}/auth/register`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -68,14 +72,25 @@ export default function Register() {
         body: JSON.stringify(formData),
       });
 
-      const data = await response.json();
+      const data = await registerResponse.json();
       
       if (!data.success) {
         throw new Error(data.message);
       }
 
+      if (!registerResponse.ok) {
+        throw new Error(data.message || 'Registration failed');
+      }
+
+      // Clear form and captcha
+      setFormData({ email: '', name: '', password: '' });
+      captchaRef.current?.reset();
+      // Show success message or redirect
+      router.push('/auth/login?registered=true');
       // Redirect to login or dashboard
       window.location.href = '/auth/login';
+
+      
       
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Registration failed');
