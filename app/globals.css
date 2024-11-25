@@ -14,6 +14,12 @@ body {
   font-family: Inter;
 }
 
+@layer base {
+  * {
+    transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
+  }
+}
+
 @layer utilities {
   .btn_white { 
     @apply  border-white bg-white px-8 py-3 text-green-50

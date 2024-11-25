@@ -1,18 +1,23 @@
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import { ThemeProvider } from '@/contexts/ThemeContext';
 
-export default function MainLayout({
+export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
-    <>
-      <Navbar />
-      <main className="relative overflow-hidden">
-        {children}
-      </main>
-      <Footer />
-    </>
+    <html lang="en">
+      <body>
+        <ThemeProvider>
+          <Navbar />
+          <main className="relative overflow-hidden bg-white dark:bg-gray-900 transition-all duration-200">
+            {children}
+          </main>
+          <Footer/>
+        </ThemeProvider>
+      </body>
+    </html>
   );
 }

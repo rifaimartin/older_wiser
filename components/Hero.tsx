@@ -5,6 +5,10 @@ import ActivityButton from "./ActivityButton";
 import ActivityGrid from "./ActivityGrid";
 import ReviewCard from "./RiviewCard";
 
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+
 const Hero = () => {
   const [sortBy, setSortBy] = useState("Person");
   const reviews = [
@@ -13,53 +17,33 @@ const Hero = () => {
       initialLetter: "K",
       rating: 5,
       daysAgo: 4,
+      avatarUrl: "", // Optional
+      titleComment: "Very informative and useful!",
       comment:
-        "Very informative and useful! Really great site with lots of useful ideas. I have recommended it so mu...",
+        "Really great site with lots of useful ideas. I have recommended it so mu...",
     },
     {
       name: "William",
       initialLetter: "W",
       rating: 4,
       daysAgo: 5,
+      titleComment: "Great Website.",
       comment:
-        "Great Website. Excellent site giving all sorts of useful information for mostly older people.",
+        "Excellent site giving all sorts of useful information for mostly older people.",
     },
     {
       name: "Hollis",
       initialLetter: "H",
       rating: 5,
       daysAgo: 6,
+      titleComment: "Fantastic and Relevant.",
       comment:
-        "Fantastic and Relevant. Great website, full of interesting and informative articles and great recipes.",
-    },
-    {
-      name: "Hollis",
-      initialLetter: "H",
-      rating: 5,
-      daysAgo: 6,
-      comment:
-        "Fantastic and Relevant. Great website, full of interesting and informative articles and great recipes.",
-    },
-    {
-      name: "Hollis",
-      initialLetter: "H",
-      rating: 5,
-      daysAgo: 6,
-      comment:
-        "Fantastic and Relevant. Great website, full of interesting and informative articles and great recipes.",
-    },
-    {
-      name: "Hollis",
-      initialLetter: "H",
-      rating: 5,
-      daysAgo: 6,
-      comment:
-        "Fantastic and Relevant. Great website, full of interesting and informative articles and great recipes.",
+        "Great website, full of interesting and informative articles and great recipes.",
     },
   ];
   const activities = [
     {
-      title: "Lower Back Pain Exercise",
+      title: "Pull Up Exercise",
       image:
         "https://30dayfitness.app/static/60b88f3ef35667c3c0fc304c010a4f96/benefits-of-exercises-for-older-adults.jpeg",
       duration: "20 min",
@@ -115,7 +99,7 @@ const Hero = () => {
       category: "Cooking",
     },
     {
-      title: "Checkered Crochet Bag",
+      title: "Sunflower Vase",
       image:
         "https://www.bria.com.ph/wp-content/uploads/2023/01/Pottery-in-Manila.png",
       duration: "2 hours",
@@ -144,97 +128,214 @@ const Hero = () => {
     },
   ];
 
+  const slides = [
+    // Slide 1 - Main Hero
+    <div className="relative h-[450px] w-full bg-cover rounded-3xl overflow-hidden">
+      <img
+        src="https://www.focusonthefamily.com/wp-content/uploads/2019/11/stocksy_2068719_back-in-town-1.jpg"
+        alt="Family"
+        className="w-full h-full object-cover object-top" // Ubah object-center ke object-top
+      />
+      <div className="absolute inset-0 bg-black bg-opacity-30" />
+      <div className="absolute bottom-16 left-12 max-w-xl">
+        {" "}
+        {/* Naikkan posisi text */}
+        <h1 className="text-4xl font-bold mb-3 text-white">
+          {" "}
+          {/* Kecilkan ukuran font */}
+          Discover more.
+        </h1>
+        <h2 className="text-4xl font-bold mb-4 text-white">Older Wiser.</h2>
+        <p className="text-base text-white/90 font-light mb-6 leading-relaxed">
+          {" "}
+          {/* Kecilkan ukuran font */}
+          Indonesia's digital platform that can help everyone growing.
+          <br />
+          Remember family is everything.
+        </p>
+        <button className="bg-[#6A8270] hover:bg-[#7c9884] text-white font-semibold py-2 px-6 rounded-full text-sm">
+          {" "}
+          {/* Sesuaikan ukuran button */}
+          START NOW!
+        </button>
+      </div>
+    </div>,
+
+    // Slide 2 - Membership
+    // Slide Membership
+    <div className="relative h-[450px] w-full bg-cover bg-center rounded-3xl overflow-hidden">
+      <img
+        src="https://www.lv8bali.com/wp-content/uploads/2021/09/FAMTASTIC.jpg"
+        alt="Membership"
+        className="w-full h-full object-cover"
+      />
+      <div className="absolute inset-0 bg-black bg-opacity-40" />
+
+      {/* Content Container with divider */}
+      <div className="absolute inset-0 flex items-center">
+        {/* Left Content */}
+        <div className="flex-1 pl-12">
+          <div className="text-yellow-400 text-6xl mb-6">
+            {" "}
+            {/* Increased icon size */}
+            👑
+          </div>
+          <h2 className="text-2xl font-normal text-white mb-2">
+            Become a member for
+          </h2>
+          <h3 className="text-4xl font-bold text-white">Unlimited Access</h3>
+          <button className="bg-[#6A8270] hover:bg-[#7c9884] text-white font-semibold py-2 px-6 rounded-full text-sm mt-6">
+            JOIN NOW!
+          </button>
+        </div>
+
+        {/* Center Divider */}
+        <div className="w-px h-60 bg-white/50 mx-8" />
+
+        {/* Right Content */}
+        <div className="flex-1 pr-12">
+          <h4 className="text-4xl font-bold text-white mb-6">
+            Rp 39.000<span className="text-xl font-normal">/month</span>
+          </h4>
+          <ul className="text-white space-y-3 text-lg">
+            <li>• Unlock more exciting activities.</li>
+            <li>• Gain more points from finishing activities.</li>
+            <li>• Claim points to get Exclusive Voucher.</li>
+            <li>• Upgrade your "Member" badges.</li>
+          </ul>
+        </div>
+      </div>
+    </div>,
+
+    // Slide 3 - Weekly Activity
+    <div className="relative h-[450px] w-full bg-cover bg-center rounded-3xl overflow-hidden">
+      <div className="absolute inset-0 bg-gradient-to-r from-white/20 to-white/90">
+        {" "}
+        {/* Gradient overlay */}
+        <img
+          src="https://w0.peakpx.com/wallpaper/127/305/HD-wallpaper-white-flowers-branches-in-white-background-white-aesthetic.jpg"
+          alt="Weekly Activity"
+          className="w-full h-full object-cover object-left" // Align image to left
+        />
+      </div>
+
+      {/* Content - Aligned to right */}
+      <div className="absolute right-12 top-1/2 -translate-y-1/2 text-right">
+        <h2 className="text-3xl font-bold text-black mb-2">
+          Weekly Top Activity :
+        </h2>
+        <h3 className="text-4xl font-bold text-black mb-8">
+          Crepe Paper Flower
+        </h3>
+        <button
+          className="bg-[#6A8270] hover:bg-[#7c9884] text-white font-semibold 
+     py-2 px-8 rounded-full text-sm inline-flex items-center gap-2"
+        >
+          <svg
+            className="w-4 h-4"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.347a1.125 1.125 0 0 1 0 1.972l-11.54 6.347c-.75.412-1.667-.13-1.667-.986V5.653Z"
+            />
+          </svg>
+          PLAY
+        </button>
+      </div>
+    </div>,
+  ];
+
+  const settings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    autoplay: true,
+    autoplaySpeed: 3000,
+    fade: true,
+  };
+
   const categories = ["Health & Wellness", "Cooking", "Art & Crafts"];
 
   return (
-    <div className="mx-auto my-8 max-w-7xl">
-      <div
-        className="relative h-[500px] w-full bg-cover bg-center rounded-3xl overflow-hidden"
-        style={{
-          backgroundImage:
-            "url('https://www.focusonthefamily.com/wp-content/uploads/2019/11/stocksy_2068719_back-in-town-1.jpg')",
-          backgroundPosition: "center 10%",
-        }}
-      >
-        <div className="absolute inset-0 bg-black bg-opacity-40"></div>
-        <div className="absolute bottom-12 left-12 max-w-xl text-white text-left">
-          <h1 className="text-4xl font-bold mb-4 text-gray-300">
-            Discover more.
-          </h1>
-          <h2 className="text-4xl font-bold mb-4 text-gray-300">
-            Older Wiser.
-          </h2>
-          <p className="text-lg font-light mb-6 text-gray-400 leading-relaxed">
-            Indonesia's digital platform that can help <br /> everyone growing.
-            Remember family is <br /> everything.
-          </p>
-          <button className="bg-green-700 hover:bg-green-600 text-white font-bold py-2 px-6 rounded-full">
-            START NOW!
-          </button>
-        </div>
-      </div>
-      <MembershipCard />
-      <div className="mt-8">
-        <h3 className="text-2xl font-bold mb-4 text-center">Activities</h3>
-        <div className="flex justify-center space-x-4">
+    <div className="mx-auto my-8 max-w-7xl px-4">
+      <Slider {...settings}>{slides}</Slider>
+
+      {/* <MembershipCard /> */}
+      <div className="flex flex-col items-center gap-8 my-8">
+        <h2 className="text-2xl font-semibold dark:text-white">
+          Activity Categories
+        </h2>
+
+        <div className="flex justify-center gap-4">
           {categories.map((category) => (
-            <ActivityButton key={category} label={category.toUpperCase()} />
+            <button
+              key={category}
+              className="px-8 py-2 rounded-full border-2 border-[#6A8270] text-[#6A8270] hover:bg-[#6A8270] hover:text-white transition-colors"
+            >
+              {category.toUpperCase()}
+            </button>
           ))}
         </div>
       </div>
-      <div className="relative mt-4">
-        <select
-          value={sortBy}
-          onChange={(e) => setSortBy(e.target.value)}
-          className="appearance-none bg-white border border-gray-300 rounded-full py-2 px-4 pr-8 leading-tight focus:outline-none focus:border-gray-500"
-        >
-          <option>Sort by: Person</option>
-          <option>Sort by: Date</option>
-          <option>Sort by: Popular</option>
-        </select>
-        <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-          <svg
-            className="fill-current h-4 w-4"
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 20 20"
+      <div className="space-y-12 px-4 mt-8">
+        {/* Sort dropdown */}
+        <div className="flex justify-end">
+          <select
+            value={sortBy}
+            onChange={(e) => setSortBy(e.target.value)}
+            className="appearance-none bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 
+     rounded-full py-2 px-4 pr-8 leading-tight focus:outline-none focus:border-gray-500 
+     dark:text-white transition-colors duration-200"
           >
-            <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
-          </svg>
+            <option>Sort by: Person</option>
+            <option>Sort by: Date</option>
+            <option>Sort by: Popular</option>
+          </select>
         </div>
       </div>
+
       {categories.map((category) => (
-        <ActivityGrid
-          key={category}
-          title={category}
-          activities={activities.filter(
-            (activity) => activity.category === category
-          )}
-        />
-      ))}
-      <div className="text-right mt-4">
-        <button className="text-green-600 hover:text-green-700 font-semibold">
-          See more...
-        </button>
-      </div>
-      
-      <div className="py-8">
-      <div className="container mx-auto px-4">
-        <h1 className="text-3xl font-bold text-center mb-6">What people say about Older Wiser</h1>
-        <div className="relative">
-          <div className="flex overflow-x-auto pb-4 -mx-4 px-4 space-x-4 scrollbar-hide">
-            {reviews.map((review, index) => (
-              <div key={index} className="flex-none w-64">
-                <ReviewCard {...review} />
-              </div>
-            ))}
-          </div>
+        <div key={category}>
+          <ActivityGrid
+            title={category}
+            activities={activities.filter(
+              (activity) => activity.category === category
+            )}
+          />
         </div>
-        <div className="text-right mt-6">
-          <a href="#" className="text-blue-500 hover:underline text-sm">See more reviews...</a>
+      ))}
+
+      <div className="py-8">
+        <div className="container mx-auto px-4">
+          <h1 className="text-3xl font-bold text-center mb-6 dark:text-white">
+            What people say about Older Wiser
+          </h1>
+          <div className="relative">
+            <div className="grid grid-cols-3 gap-6 max-w-6xl mx-auto px-4">
+              {reviews.map((review, index) => (
+                <div key={index}>
+                  <ReviewCard {...review} />
+                </div>
+              ))}
+            </div>
+          </div>
+          <div className="text-right mt-6">
+            <a
+              href="#"
+              className="text-blue-500 dark:text-blue-400 hover:underline text-sm transition-colors duration-200"
+            >
+              See more reviews...
+            </a>
+          </div>
         </div>
       </div>
     </div>
-      </div>
   );
 };
 
