@@ -130,7 +130,7 @@ const Hero = () => {
 
   const slides = [
     // Slide 1 - Main Hero
-    <div className="relative h-[450px] w-full bg-cover rounded-3xl overflow-hidden">
+    <div className="relative h-[400px] w-full bg-cover rounded-3xl overflow-hidden">
       <img
         src="https://www.focusonthefamily.com/wp-content/uploads/2019/11/stocksy_2068719_back-in-town-1.jpg"
         alt="Family"
@@ -139,31 +139,24 @@ const Hero = () => {
       <div className="absolute inset-0 bg-black bg-opacity-30" />
       <div className="absolute bottom-16 left-12 max-w-xl">
         {" "}
-        {/* Naikkan posisi text */}
         <h1 className="text-4xl font-bold mb-3 text-white">
           {" "}
-          {/* Kecilkan ukuran font */}
           Discover more.
         </h1>
-        <h2 className="text-4xl font-bold mb-4 text-white">Older Wiser.</h2>
-        <p className="text-base text-white/90 font-light mb-6 leading-relaxed">
+        <h1 className="text-4xl font-bold mb-3 text-white">
           {" "}
-          {/* Kecilkan ukuran font */}
-          Indonesia's digital platform that can help everyone growing.
-          <br />
-          Remember family is everything.
-        </p>
-        <button className="bg-[#6A8270] hover:bg-[#7c9884] text-white font-semibold py-2 px-6 rounded-full text-sm">
+          Older Wiser.
+        </h1>
+       
+        {/* <button className="bg-[#6A8270] hover:bg-[#7c9884] text-white font-semibold py-2 px-6 rounded-full text-sm">
           {" "}
-          {/* Sesuaikan ukuran button */}
           START NOW!
-        </button>
+        </button> */}
       </div>
     </div>,
 
     // Slide 2 - Membership
-    // Slide Membership
-    <div className="relative h-[450px] w-full bg-cover bg-center rounded-3xl overflow-hidden">
+    <div className="relative h-[400px] w-full bg-cover bg-center rounded-3xl overflow-hidden">
       <img
         src="https://www.lv8bali.com/wp-content/uploads/2021/09/FAMTASTIC.jpg"
         alt="Membership"
@@ -208,7 +201,7 @@ const Hero = () => {
     </div>,
 
     // Slide 3 - Weekly Activity
-    <div className="relative h-[450px] w-full bg-cover bg-center rounded-3xl overflow-hidden">
+    <div className="relative h-[400px] w-full bg-cover bg-center rounded-3xl overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-r from-white/20 to-white/90">
         {" "}
         {/* Gradient overlay */}
