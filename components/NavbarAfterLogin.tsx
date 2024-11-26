@@ -3,6 +3,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { DarkModeToggle } from "./DarkModeToggle";
 import { useEffect, useState } from "react";
+import { BatteryStatus } from '@/components/BatteryStatus';
 interface User {
   name: string;
   email: string;
@@ -83,6 +84,7 @@ const NavbarAfterLogin = () => {
 
       {/* Right Side Icons */}
       <div className="flex items-center space-x-4">
+        <BatteryStatus />
         <div className="dark:text-white transition-colors duration-200 ml-6">
           <DarkModeToggle />
         </div>

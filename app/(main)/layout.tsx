@@ -5,7 +5,7 @@ import Navbar from "@/components/Navbar";
 import NavbarAfterLogin from "@/components/NavbarAfterLogin";
 import Footer from "@/components/Footer";
 import { ThemeProvider } from '@/contexts/ThemeContext';
-import { BatteryMonitor } from '@/components/BatteryMonitor';
+// import { BatteryMonitor } from '@/components/BatteryMonitor';
 
 export default function RootLayout({
   children,
@@ -19,7 +19,7 @@ export default function RootLayout({
   return (
     <>
       <ThemeProvider>
-        <BatteryMonitor />
+        {/* <BatteryMonitor /> */}
         {isAuthPage ? (
           <main className="relative overflow-hidden bg-white dark:bg-gray-900 transition-all duration-200">
             {children}
