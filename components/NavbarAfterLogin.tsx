@@ -4,6 +4,7 @@ import Link from "next/link";
 import { DarkModeToggle } from "./DarkModeToggle";
 import { useEffect, useState } from "react";
 import { BatteryStatus } from '@/components/BatteryStatus';
+import { ProfileDropdown } from './ProfileDropdown';
 interface User {
   name: string;
   email: string;
@@ -23,7 +24,7 @@ const NavbarAfterLogin = () => {
   }, []);
 
   return (
-    <nav className="flex items-center justify-between px-4 py-2 bg-white dark:bg-gray-900 border-b dark:border-gray-800">
+    <nav className="flex items-center relative z-10 justify-between px-4 py-2 bg-white dark:bg-gray-900 border-b dark:border-gray-800">
       {/* Logo and Left Menu */}
       <div className="flex items-center space-x-8">
         <div className="text-2xl font-serif text-[#6A8270] dark:text-white">
@@ -124,15 +125,8 @@ const NavbarAfterLogin = () => {
         </button>
 
         {/* User Profile */}
-        <div className="flex items-center space-x-2">
-          <span className="text-gray-700 dark:text-gray-200">
-            {user?.name || "Loading..."}
-          </span>
-          <img
-            src="https://static.vecteezy.com/system/resources/previews/010/964/616/original/avatar-old-woman-free-vector.jpg" // Ganti dengan avatar dari user data jika ada
-            alt={`${user?.name}'s profile`}
-            className="w-8 h-8 rounded-full object-cover cursor-pointer"
-          />
+        <div className="relative">
+        <ProfileDropdown />
         </div>
       </div>
     </nav>
