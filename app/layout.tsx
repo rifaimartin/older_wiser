@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 
+
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
   variable: "--font-geist-sans",
@@ -15,17 +16,20 @@ const geistMono = localFont({
 
 export const metadata: Metadata = {
   title: "Older Wiser",
-  description: "Older Wiser Apps",
+  description: "Indonesia digital platform that can help everyone growing",
 };
 
+// app/layout.tsx
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body suppressHydrationWarning={true}>
+        {children}
+      </body>
     </html>
   );
 }

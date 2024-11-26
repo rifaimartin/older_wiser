@@ -5,11 +5,12 @@ import ActivityButton from "./ActivityButton";
 import ActivityGrid from "./ActivityGrid";
 import ReviewCard from "./RiviewCard";
 
-import Slider from "react-slick";
+import dynamic from 'next/dynamic';
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
 const Hero = () => {
+  const Slider = dynamic(() => import('react-slick'), { ssr: false });
   const [sortBy, setSortBy] = useState("Person");
   const reviews = [
     {
@@ -257,7 +258,15 @@ const Hero = () => {
 
   return (
     <div className="mx-auto my-8 max-w-7xl px-4">
-      <Slider {...settings}>{slides}</Slider>
+      <Slider {...settings}>
+        {slides.map((slide, index) => (
+          <div key={`slide-${index}`}>
+            {" "}
+            {/* Tambahkan key yang unik */}
+            {slide}
+          </div>
+        ))}
+      </Slider>
 
       {/* <MembershipCard /> */}
       <div className="flex flex-col items-center gap-8 my-8">
