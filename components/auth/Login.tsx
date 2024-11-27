@@ -22,9 +22,9 @@ export const Login = () => {
 
     try {
       const response = await fetch(`${API_BASE_URL}/auth/login`, {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(formData),
       });
@@ -32,16 +32,23 @@ export const Login = () => {
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.message || 'Login failed');
+        throw new Error(data.message || "Login failed");
       }
 
-      // Save token to localStorage
-      localStorage.setItem('token', data.data.token);
-      localStorage.setItem('user', JSON.stringify(data.data.user));
+       // Set cookies with complete user data
+      document.cookie = `token=${data.data.token}; path=/`;
+      document.cookie = `user=${JSON.stringify(data.data.user)}; path=/`;
 
-      // Redirect to dashboard or home
-      router.push('/');
-      
+      // Save token to localStorage
+      localStorage.setItem("token", data.data.token);
+      localStorage.setItem("user", JSON.stringify(data.data.user));
+
+      // Check role and redirect accordingly
+      if (data.data.user.role === "admin") {
+        router.push("/admin/activities"); // atau /admin/dashboard jika ada
+      } else {
+        router.push("/");
+      }
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Login failed');
     } finally {

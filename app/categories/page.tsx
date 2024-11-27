@@ -63,7 +63,7 @@ export default function CategoriesPage() {
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-8">
-      <h1 className="text-center text-2xl font-semibold mb-8">
+      <h1 className="text-center text-2xl dark:text-white font-semibold mb-8">
         Activity Categories
       </h1>
 
@@ -84,8 +84,8 @@ export default function CategoriesPage() {
       </div>
 
       {/* Filter Section */}
-      <div className="flex justify-end mb-6">
-        <button className="flex items-center gap-2 text-sm text-gray-600">
+      <div className="flex justify-end mb-6 ">
+        <button className="flex items-center gap-2 text-sm text-gray-600 dark:text-white">
           <svg 
             className="w-5 h-5" 
             fill="none" 
@@ -99,7 +99,7 @@ export default function CategoriesPage() {
       </div>
 
       {/* Category Title */}
-      <h2 className="text-xl font-semibold mb-6">{selectedCategory}</h2>
+      <h2 className="text-xl font-semibold dark:text-white mb-6">{selectedCategory}</h2>
 
       {/* Activities Grid */}
       {isLoading ? (

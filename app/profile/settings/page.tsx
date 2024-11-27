@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { AvatarUpload } from "@/components/AvatarUpload";
 import { API_BASE_URL } from "@/constants";
+import Swal from "sweetalert2";
 
 interface UserSettings {
   name: string;
@@ -44,7 +45,7 @@ export default function Settings() {
       }
 
       const data = await response.json();
-      
+
       // Update settings with fetched data
       setSettings((prev) => ({
         ...prev,
@@ -59,7 +60,6 @@ export default function Settings() {
 
       // Update localStorage
       localStorage.setItem("user", JSON.stringify(data.data.personalInfo));
-
     } catch (error) {
       console.error("Error fetching profile:", error);
       alert("Failed to load profile data");
@@ -120,9 +120,14 @@ export default function Settings() {
       const data = await response.json();
 
       // Update localStorage and refetch profile
-      await fetchProfile();
-
-      alert("Profile updated successfully!");
+      Swal.fire({
+        title: "Activity update succefully!",
+        // text: "Your battery is below 20%. Would you like to enable dark mode to save battery?",
+        icon: "success",
+        // showCancelButton: true,
+        confirmButtonColor: "#6A8270",
+        confirmButtonText: "ok",
+      }).then((result) => {});
     } catch (error) {
       console.error("Error updating profile:", error);
       alert("Failed to update profile. Please try again.");
@@ -134,6 +139,9 @@ export default function Settings() {
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
+
+    document.cookie = "token=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT";
+    document.cookie = "user=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT";
     router.push("/auth/login");
   };
 
@@ -145,7 +153,11 @@ export default function Settings() {
           <div className="flex flex-col items-center mb-12">
             <AvatarUpload
               name={settings.name}
-              currentImage={settings.imageUrl ? `${API_BASE_URL}${settings.imageUrl}` : undefined}
+              currentImage={
+                settings.imageUrl
+                  ? `${API_BASE_URL}${settings.imageUrl}`
+                  : undefined
+              }
               onFileSelect={setSelectedFile}
             />
           </div>
