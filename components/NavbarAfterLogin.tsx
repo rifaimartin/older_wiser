@@ -1,22 +1,22 @@
 "use client";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import Link from "next/link";
 import { DarkModeToggle } from "./DarkModeToggle";
 import { useEffect, useState } from "react";
 import { BatteryStatus } from '@/components/BatteryStatus';
 import { ProfileDropdown } from './ProfileDropdown';
+
 interface User {
   name: string;
   email: string;
-  // tambahkan field lain sesuai response
 }
 
 const NavbarAfterLogin = () => {
   const router = useRouter();
+  const pathname = usePathname();
   const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
-    // Get user data from localStorage on mount
     const userData = localStorage.getItem("user");
     if (userData) {
       setUser(JSON.parse(userData));
@@ -27,27 +27,35 @@ const NavbarAfterLogin = () => {
     <nav className="flex items-center relative z-10 justify-between px-4 py-2 bg-white dark:bg-gray-900 border-b dark:border-gray-800">
       {/* Logo and Left Menu */}
       <div className="flex items-center space-x-8">
-        <div className="text-2xl font-serif text-[#6A8270] dark:text-white">
-          OLDERWISER
-        </div>
+        <Link href="/" className="group cursor-pointer">
+          <div className="text-2xl font-serif text-[#6A8270] dark:text-white transition-all duration-300 hover:text-[#7c9884] dark:hover:text-gray-200">
+            OLDERWISER
+          </div>
+        </Link>
 
         {/* Navigation Links */}
         <div className="hidden md:flex space-x-6">
           <Link
             href="/categories"
-            className="text-gray-600 dark:text-gray-200 hover:text-[#6A8270] transition-colors"
+            className={`text-gray-600 dark:text-gray-200 hover:text-[#6A8270] transition-colors ${
+              pathname === '/categories' ? 'text-[#6A8270] dark:text-white font-medium' : ''
+            }`}
           >
             Categories
           </Link>
           <Link
             href="/explore"
-            className="text-gray-600 dark:text-gray-200 hover:text-[#6A8270] transition-colors"
+            className={`text-gray-600 dark:text-gray-200 hover:text-[#6A8270] transition-colors ${
+              pathname === '/explore' ? 'text-[#6A8270] dark:text-white font-medium' : ''
+            }`}
           >
             Explore
           </Link>
           <Link
-            href="/share"
-            className="text-gray-600 dark:text-gray-200 hover:text-[#6A8270] transition-colors"
+            href="/activities/share"
+            className={`text-gray-600 dark:text-gray-200 hover:text-[#6A8270] transition-colors ${
+              pathname === '/activities/share' ? 'text-[#6A8270] dark:text-white font-medium' : ''
+            }`}
           >
             Share
           </Link>
@@ -59,7 +67,7 @@ const NavbarAfterLogin = () => {
         <div className="relative">
           <input
             type="search"
-            placeholder="Search..."
+            placeholder="Search activities..."
             className="w-full pl-3 pr-10 py-2 border-2 border-[#6A8270] dark:border-green-600 
             dark:bg-gray-800 dark:text-gray-200 rounded-full
             focus:outline-none focus:ring-2 focus:ring-[#6A8270] dark:focus:ring-green-500
@@ -108,7 +116,10 @@ const NavbarAfterLogin = () => {
         </button>
 
         {/* Favorites */}
-        <button className="text-gray-600 dark:text-gray-200 hover:text-[#6A8270] transition-colors">
+        <Link 
+          href="/activities/favorites"
+          className="text-gray-600 dark:text-gray-200 hover:text-[#6A8270] transition-colors"
+        >
           <svg
             className="w-6 h-6"
             fill="none"
@@ -122,11 +133,11 @@ const NavbarAfterLogin = () => {
               d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
             />
           </svg>
-        </button>
+        </Link>
 
         {/* User Profile */}
         <div className="relative">
-        <ProfileDropdown />
+          <ProfileDropdown />
         </div>
       </div>
     </nav>

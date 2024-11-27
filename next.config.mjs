@@ -2,6 +2,9 @@
 const nextConfig = {
   reactStrictMode: true,
   images: {
+    domains: ['localhost'],
+  },
+  images: {
     remotePatterns: [
       {
         protocol: 'https',
@@ -19,6 +22,18 @@ const nextConfig = {
         protocol: 'https',
         hostname: 'www.bria.com.ph',
       },
+      {
+        protocol: 'http',
+        hostname: 'localhost',
+        port: '4000',
+        pathname: '/api/uploads/**',
+      },
+      {
+        protocol: 'http',
+        hostname: 'localhost',
+        port: '4000',
+        pathname: '/uploads/**',
+      }
     ],
   },
 }
