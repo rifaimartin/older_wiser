@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react';
 import { API_BASE_URL } from '@/constants';
 import Swal from 'sweetalert2';
+import { ActivityFormModal } from '@/components/admin/ActivityFormModal';
 
 interface Activity {
   _id: string;
@@ -16,6 +17,13 @@ export default function ManageActivities() {
   const [activities, setActivities] = useState<Activity[]>([]);
   const [loading, setLoading] = useState(true);
   const [editingActivity, setEditingActivity] = useState<Activity | null>(null);
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleSuccess = () => {
+    // Refresh activities list
+    // ...
+  };
 
   // Fetch activities
   useEffect(() => {
@@ -92,13 +100,19 @@ export default function ManageActivities() {
     <div className="max-w-7xl mx-auto p-8">
       <div className="flex justify-between items-center mb-8">
         <h1 className="text-2xl font-bold dark:text-white">Manage Activities</h1>
-        <button 
-          onClick={() => setEditingActivity({ _id: '', title: '', description: '', category: '', image: '', createdAt: '' })}
-          className="px-4 py-2 bg-[#6A8270] text-white rounded-lg hover:bg-[#5a7260]"
+        <button
+          onClick={() => setIsModalOpen(true)}
+          className="px-4 py-2 bg-[#6A8270] text-white rounded-md hover:bg-[#5a7260]"
         >
           Add New Activity
         </button>
       </div>
+
+      <ActivityFormModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onSuccess={handleSuccess}
+      />
 
       {loading ? (
         <div className="text-center py-8">Loading...</div>

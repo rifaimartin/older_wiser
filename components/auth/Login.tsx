@@ -1,12 +1,14 @@
 'use client';
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { AuthCard } from './AuthCard';
 import { API_BASE_URL } from '@/constants';
+import ReCAPTCHA from "react-google-recaptcha";
 
 export const Login = () => {
   const router = useRouter();
+  const captchaRef = useRef<ReCAPTCHA>(null);
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -15,12 +17,47 @@ export const Login = () => {
   const [error, setError] = useState('');
   const [showPassword, setShowPassword] = useState(false);
 
+  // Get reCAPTCHA site key
+  const RECAPTCHA_SITE_KEY = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY;
+
+  const verifyCaptcha = async (token: string) => {
+    try {
+      const response = await fetch(`${API_BASE_URL}/captcha/verify`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ captchaToken: token }),
+      });
+      
+      const data = await response.json();
+      return data.success;
+    } catch (error) {
+      return false;
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
     setIsLoading(true);
 
     try {
+      // Verify reCAPTCHA first
+      const token = captchaRef.current?.getValue();
+      if (!token) {
+        setError('Please verify that you are not a robot');
+        setIsLoading(false);
+        return;
+      }
+
+      const isValidCaptcha = await verifyCaptcha(token);
+      if (!isValidCaptcha) {
+        setError('Captcha verification failed');
+        setIsLoading(false);
+        return;
+      }
+
       const response = await fetch(`${API_BASE_URL}/auth/login`, {
         method: "POST",
         headers: {
@@ -35,7 +72,7 @@ export const Login = () => {
         throw new Error(data.message || "Login failed");
       }
 
-       // Set cookies with complete user data
+      // Set cookies with complete user data
       document.cookie = `token=${data.data.token}; path=/`;
       document.cookie = `user=${JSON.stringify(data.data.user)}; path=/`;
 
@@ -45,7 +82,7 @@ export const Login = () => {
 
       // Check role and redirect accordingly
       if (data.data.user.role === "admin") {
-        router.push("/admin/activities"); // atau /admin/dashboard jika ada
+        router.push("/admin/activities");
       } else {
         router.push("/");
       }
@@ -53,6 +90,7 @@ export const Login = () => {
       setError(err instanceof Error ? err.message : 'Login failed');
     } finally {
       setIsLoading(false);
+      captchaRef.current?.reset(); // Reset captcha after attempt
     }
   };
 
@@ -109,6 +147,15 @@ export const Login = () => {
                 )}
               </button>
             </div>
+          </div>
+
+          {/* ReCAPTCHA */}
+          <div className="flex justify-center">
+            <ReCAPTCHA
+              ref={captchaRef}
+              sitekey={RECAPTCHA_SITE_KEY || ''}
+              onChange={() => setError('')}
+            />
           </div>
 
           <div className="flex items-center justify-end">

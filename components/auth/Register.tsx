@@ -20,30 +20,30 @@ export default function Register() {
   const captchaRef = useRef<ReCAPTCHA>(null);
 
    // Pastikan site key tersedia
-   const RECAPTCHA_SITE_KEY = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY;
-  
+   const RECAPTCHA_SITE_KEY = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || "6LcaT4sqAAAAAIL_cafg21PiFM-LIJnkLAhIA23_";
+    console.log(RECAPTCHA_SITE_KEY + "ADAAN GA CUY")
    if (!RECAPTCHA_SITE_KEY) {
      console.error('RECAPTCHA_SITE_KEY is not defined');
    }
 
    console.log(RECAPTCHA_SITE_KEY+"jancok")
 
-  // const verifyCaptcha = async (token: string) => {
-  //   try {
-  //     const response = await fetch(`${API_BASE_URL}/captcha/verify`, {
-  //       method: 'POST',
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //       },
-  //       body: JSON.stringify({ captchaToken: token }),
-  //     });
+  const verifyCaptcha = async (token: string) => {
+    try {
+      const response = await fetch(`${API_BASE_URL}/captcha/verify`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ captchaToken: token }),
+      });
       
-  //     const data = await response.json();
-  //     return data.success;
-  //   } catch (error) {
-  //     return false;
-  //   }
-  // };
+      const data = await response.json();
+      return data.success;
+    } catch (error) {
+      return false;
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -51,17 +51,17 @@ export default function Register() {
     setIsLoading(true);
 
     try {
-      // const token = captchaRef.current?.getValue();
-      // if (!token) {
-      //   setError('Please verify that you are not a robot');
-      //   return;
-      // }
+      const token = captchaRef.current?.getValue();
+      if (!token) {
+        setError('Please verify that you are not a robot');
+        return;
+      }
 
-      // const isValidCaptcha = await verifyCaptcha(token);
-      // if (!isValidCaptcha) {
-      //   setError('Captcha verification failed');
-      //   return;
-      // }
+      const isValidCaptcha = await verifyCaptcha(token);
+      if (!isValidCaptcha) {
+        setError('Captcha verification failed');
+        return;
+      }
 
       // Proceed with registration
       const registerResponse = await fetch(`${API_BASE_URL}/auth/register`, {
@@ -156,13 +156,13 @@ export default function Register() {
           </div>
 
           {/* ReCAPTCHA */}
-          {/* <div className="flex justify-center">
+          <div className="flex justify-center">
             <ReCAPTCHA
               ref={captchaRef}
               sitekey={RECAPTCHA_SITE_KEY || ''}
               onChange={() => setError('')}
             />
-          </div> */}
+          </div>
 
           {error && (
             <div className="text-red-500 text-sm text-center">
