@@ -295,7 +295,7 @@ export default function ShareActivityPage() {
                      // Pastikan menggunakan unique key
                     value={activity.category}
                   >
-                    {activity.title}
+                    {activity.title} - {activity.category}
                   </option>
                 ))}
               </select>

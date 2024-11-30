@@ -24,7 +24,7 @@ interface UserActivityGridProps {
 const UserActivityCard = ({ activity }: { activity: UserActivity }) => {
   return (
     <div className="rounded-2xl overflow-hidden bg-white dark:bg-gray-800 shadow-sm hover:shadow-md hover:drop-shadow-2xl transition-all duration-300 cursor-pointer hover:scale-105">
-      <Link href={`/activity/${activity.id}`}>
+      <Link href={`/activities/${activity.id}`}>
         <div className="relative aspect-[4/3]">
           <Image
             src={`${API_BASE_URL}${activity.image}`} // Tambahkan API_BASE_URL
