@@ -8,6 +8,9 @@ export const BatteryStatus = () => {
     level: number;
     charging: boolean;
   } | null>(null);
+  
+  // Tambahkan state untuk tracking notifikasi
+  const [hasShownNotification, setHasShownNotification] = useState(false);
 
   const { toggleDarkMode, isDarkMode } = useTheme();
 
@@ -39,8 +42,10 @@ export const BatteryStatus = () => {
             charging: battery.charging,
           });
 
-          // Check for low battery
-          if (level <= 20 && !isDarkMode) {
+          // Check for low battery dan belum pernah tampil notifikasi
+          if (level <= 20 && !isDarkMode && !hasShownNotification) {
+            setHasShownNotification(true); // Set flag bahwa notifikasi sudah ditampilkan
+            
             Swal.fire({
               title: "Battery Low!",
               text: "Your battery is below 20%. Would you like to enable dark mode to save battery?",
@@ -54,6 +59,11 @@ export const BatteryStatus = () => {
                 toggleDarkMode();
               }
             });
+          }
+
+          // Reset flag jika battery sudah di atas 20%
+          if (level > 20) {
+            setHasShownNotification(false);
           }
         };
 
@@ -71,7 +81,7 @@ export const BatteryStatus = () => {
     };
 
     getBatteryInfo();
-  }, [isDarkMode, toggleDarkMode]);
+  }, [isDarkMode, toggleDarkMode, hasShownNotification]); // Tambahkan hasShownNotification ke dependencies
 
   if (!batteryInfo) return null;
 

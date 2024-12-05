@@ -1,5 +1,6 @@
 'use client';
 import { useState, useRef } from 'react';
+import Swal from 'sweetalert2';
 
 interface AvatarUploadProps {
   name: string;
@@ -15,6 +16,17 @@ export const AvatarUpload = ({ name, currentImage, onFileSelect }: AvatarUploadP
   const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (!file) return;
+
+    const maxSize = 1 * 1024 * 1024; // 1MB
+    if (file.size > maxSize) {
+      Swal.fire({
+        title: 'File Too Large!',
+        text: 'Please upload an image less than 1MB',
+        icon: 'error',
+        confirmButtonColor: '#6A8270'
+      });
+      return;
+    } 
 
     // Create preview URL
     const fileUrl = URL.createObjectURL(file);
