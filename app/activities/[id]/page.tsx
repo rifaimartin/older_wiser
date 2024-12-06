@@ -12,7 +12,7 @@ interface ActivityDetail {
   category: string;
   description: string;
   difficulty: string;
-  email:string,
+  email: string;
   materials: string[];
   steps: string[];
   createdBy: {
@@ -28,38 +28,70 @@ export default function ActivityDetailPage() {
   const [activity, setActivity] = useState<ActivityDetail | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState("");
-  const [imageSize, setImageSize] = useState<string>('');
+  const [imageSize, setImageSize] = useState<string>("");
+  const [isDownloading, setIsDownloading] = useState(false);
 
- // Fungsi untuk konversi bytes ke MB
- const formatBytes = (bytes: number): string => {
+  // Fungsi untuk konversi bytes ke MB
+  const formatBytes = (bytes: number): string => {
     const mb = bytes / (1024 * 1024);
     return `${mb.toFixed(2)} MB`;
   };
 
-  // Fungsi untuk download image
   const handleDownload = async () => {
-    if (!activity?.image) return;
+    if (!activity) return; // Early return if activity is null
 
     try {
-      // Fetch the image
-      const response = await fetch(`${API_BASE_URL}${activity.image}`);
+      setIsDownloading(true);
+
+      // Get filename from image URL
+      const filename = activity.image.split("/").pop();
+
+      const response = await fetch(
+        `${API_BASE_URL}/activities/download/${filename}`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+
+      if (!response.ok) throw new Error("Download failed");
+
+      response.headers.forEach((value, key) => {
+        console.log(`${key}: ${value}`);
+      });
+
+      const headerObj = Object.fromEntries(response.headers);
+      console.log("Headers as object:", headerObj);
+
+      console.log("Content-Length:", response.headers.get("content-length"));
+      console.log("X-File-Size:", response.headers.get("x-file-size"));
+
+      // use content length if x file size is null
+      const fileSize =
+        response.headers.get("content-length") ||
+        response.headers.get("x-file-size");
+
+      if (fileSize) {
+        const sizeInMB = formatBytes(parseInt(fileSize));
+        setImageSize(sizeInMB);
+      }
+      // Download file
       const blob = await response.blob();
-
-      // Get file size
-      const size = formatBytes(blob.size);
-      setImageSize(size);
-
-      // Create download link
       const url = window.URL.createObjectURL(blob);
-      const link = document.createElement('a');
+      const link = document.createElement("a");
       link.href = url;
-      link.download = `${activity.title.toLowerCase().replace(/\s+/g, '-')}.jpg`;
+      link.download = `${activity.title
+        .toLowerCase()
+        .replace(/\s+/g, "-")}.jpg`;
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
       window.URL.revokeObjectURL(url);
     } catch (error) {
-      console.error('Error downloading image:', error);
+      console.error("Download error:", error);
+    } finally {
+      setIsDownloading(false);
     }
   };
   useEffect(() => {
@@ -117,7 +149,7 @@ export default function ActivityDetailPage() {
           fill
           className="object-cover rounded-2xl"
         />
-    
+ 
         <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent p-6">
           <div className="flex items-center justify-between text-white">
             <div>
@@ -135,8 +167,8 @@ export default function ActivityDetailPage() {
           </div>
         </div>
       </div>
-
-      {/* Creator Info */}
+ 
+      {/* Creator Info & Download Button */}
       <div className="flex items-center justify-between mb-8">
         <div className="flex items-center space-x-4">
           <div className="w-12 h-12 rounded-full overflow-hidden bg-gray-200">
@@ -161,36 +193,43 @@ export default function ActivityDetailPage() {
             </p>
           </div>
         </div>
-
-        {/* Download Button */}
+ 
         <div className="flex items-center gap-4">
-          {/* {imageSize && ( */}
-            <span className="text-sm text-gray-500">
-              Size: {imageSize}
-            </span>
-          {/* )} */}
-          <button 
+          {imageSize && (
+            <span className="text-sm text-gray-500">Size: {imageSize}</span>
+          )}
+          <button
             onClick={handleDownload}
-            className="flex items-center space-x-2 bg-[#6A8270] text-white px-4 py-2 rounded-full hover:bg-[#5a7260] transition-all"
+            disabled={isDownloading}
+            className="flex items-center gap-2 px-4 py-2 bg-[#6A8270] text-white rounded-full hover:bg-[#5a7260] disabled:opacity-50"
           >
-            <svg 
-              className="w-5 h-5" 
-              fill="none" 
-              stroke="currentColor" 
-              viewBox="0 0 24 24"
-            >
-              <path 
-                strokeLinecap="round" 
-                strokeLinejoin="round" 
-                strokeWidth={2} 
-                d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
-              />
-            </svg>
-            <span>Download</span>
+            {isDownloading ? (
+              <>
+                <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                Downloading...
+              </>
+            ) : (
+              <>
+                <svg
+                  className="w-5 h-5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
+                  />
+                </svg>
+                Download
+              </>
+            )}
           </button>
         </div>
       </div>
-
+ 
       {/* Activity Info */}
       <div className="grid grid-cols-2 gap-4 mb-8">
         <div className="bg-gray-50 dark:bg-gray-800 p-4 rounded-lg">
@@ -206,7 +245,7 @@ export default function ActivityDetailPage() {
           </p>
         </div>
       </div>
-
+ 
       {/* Description */}
       <div className="mb-8">
         <h2 className="text-xl font-semibold mb-4 dark:text-white">
@@ -216,7 +255,7 @@ export default function ActivityDetailPage() {
           {activity.description}
         </p>
       </div>
-
+ 
       {/* Materials */}
       <div className="mb-8">
         <h2 className="text-xl font-semibold mb-4 dark:text-white">
@@ -230,7 +269,7 @@ export default function ActivityDetailPage() {
           ))}
         </ul>
       </div>
-
+ 
       {/* Steps */}
       <div>
         <h2 className="text-xl font-semibold mb-4 dark:text-white">Steps</h2>
